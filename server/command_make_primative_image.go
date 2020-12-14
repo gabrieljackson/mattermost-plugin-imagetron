@@ -10,6 +10,7 @@ import (
 
 	"github.com/fogleman/primitive/primitive"
 	"github.com/mattermost/mattermost-server/v5/model"
+	"github.com/nfnt/resize"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 )
@@ -130,6 +131,8 @@ func (p *Plugin) runMakePrimitiveImageCommand(args []string, extra *model.Comman
 	if err != nil {
 		return nil, false, err
 	}
+	size := uint(512)
+	input = resize.Thumbnail(size, size, input, resize.Bilinear)
 
 	bg := primitive.MakeColor(primitive.AverageImageColor(input))
 	pmodel := primitive.NewModel(input, bg, 1024, 3)
